@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: juice-shop-vr
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: juice-shop-vr
+  namespace: juice-shop-vr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: juice-shop-vr
+  template:
+    metadata:
+      labels:
+        app: juice-shop-vr
+    spec:
+      containers:
+      - name: juice-shop-vr
+        image: saisarikonda603/juice-shop-vr:latest  # Replace with your image
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: juice-shop-vr
+  namespace: juice-shop-vr
+spec:
+  selector:
+    app: juice-shop-vr
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
